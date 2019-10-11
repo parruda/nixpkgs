@@ -7,7 +7,8 @@
 assert mysqlSupport -> libmysqlclient != null;
 assert postgresSupport -> postgresql != null;
 
-(if stdenv.isAarch64 then overrideCC stdenv gcc6 else stdenv).mkDerivation rec {
+# (if stdenv.isAarch64 then overrideCC stdenv gcc6 else stdenv).mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "libgda";
   version = "5.2.9";
 
@@ -24,8 +25,8 @@ assert postgresSupport -> postgresql != null;
   hardeningDisable = [ "format" ];
 
   nativeBuildInputs = [ pkgconfig intltool itstool libxml2 gobject-introspection vala ];
-  buildInputs = with stdenv.lib; [ gtk3 openssl libgee ]
-    ++ optional (mysqlSupport) libmysqlclient
+  buildInputs = with stdenv.lib; [ gtk3 openssl libgee libmysqlclient]
+    # ++ optional (mysqlSupport) libmysqlclient
     ++ optional (postgresSupport) postgresql;
 
   passthru = {
